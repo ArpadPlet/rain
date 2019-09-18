@@ -28,109 +28,100 @@ import com.wedoqa.Search4Wedoqa.Search4Wedoqa;
 public class Test1 {
 	protected static WebDriver driver = null;
 	Logger logger = LogManager.getLogger(Test1.class);
-		
+
 	@Before
 	public void beforeSuite() {
-		int help=0;
+		int help = 0;
 		Scanner chose = new Scanner(System.in);
 		System.out.println("Which browser do you want to use: (Input your answer)");
 		System.out.println("Chrome = 1");
 		System.out.println("Internet Explorer = 2");
 		System.out.println("Microsoft Edge = 3");
-	
-		help=chose.nextInt();
-		
-		if(help==1) {
+
+		help = chose.nextInt();
+
+		if (help == 1) {
 			System.setProperty("webdriver.chrome.driver", ".\\driver\\chromedriver.exe");
 			driver = new ChromeDriver();
-		} else if (help==2) {
-			System.setProperty("webdriver.ie.driver",".\\driver\\IEDriverServer.exe"); 
+		} else if (help == 2) {
+			System.setProperty("webdriver.ie.driver", ".\\driver\\IEDriverServer.exe");
 			driver = new InternetExplorerDriver();
-		} else if (help==3) {
-			System.setProperty("webdriver.edge.driver", ".\\driver\\MicrosoftWebDriver.exe"); 
+		} else if (help == 3) {
+			System.setProperty("webdriver.edge.driver", ".\\driver\\MicrosoftWebDriver.exe");
 			driver = new EdgeDriver();
 		}
-		
+
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		driver.get("https://www.google.com/");
 		driver.manage().window().maximize();
 
 		logger.info("Driver is running!");
 	}
-	
+
 	@Test
 	public void test1() throws Exception {
-	/*WebElement search = driver
-			.findElement(By.cssSelector("#tsf > div:nth-child(2) > div > div.RNNXgb > div > div.a4bIc > input"));
-	Actions action = new Actions(driver);
-	action.moveToElement(search);
-	action.click();
-	action.perform();
-	search.sendKeys("wedoqa.com");
-	
-	driver.findElement(By.cssSelector("#tsf > div:nth-child(2) > div > div.FPdoLc.VlcLAe > center > input.gNO89b"))
-			.click();*/
+
 		Search4Wedoqa search = new Search4Wedoqa(driver);
 		search.TypeWedpqa();
 		search.ClickSearch();
-		
-	
-	//Click on the first result
-	driver.findElement(By.partialLinkText("wedoqa")).click();
-	
-	//These function are needed the number of testimonails. I got this from the site.
-	findElement(6);
-	//By sending a String ("simplymap") we are choosing the name of the image file
-	screenShot("simplymap");
 
-	findElement(20);
+		// Click on the first result
+		driver.findElement(By.partialLinkText("wedoqa")).click();
 
-	screenShot("eversave");
+		// These function are needed the number of testimonails. I got this from the
+		// site.
+		findElement(6);
+		// By sending a String ("simplymap") we are choosing the name of the image file
+		screenShot("simplymap");
 
-	findElement(10);
+		findElement(20);
 
-	screenShot("pattern");
-	//counts the number of the letters "T" and "t" in the names of the team members
-	WebElement team = driver.findElement(By.cssSelector("#team"));
-	
-	int sum = 0;
-	boolean isExist=false;
-	String str=" ";
-	for (int pom = 0; pom < 53; pom++) {
-		//Try to find does this element exists or not
-		try {
-			team.findElement(By.id("illdy_person-" + pom + ""));
-			isExist=true;
-		} catch (NoSuchElementException e) {
-			System.out.println("No scuh element found!");
-			isExist=false;
-		}
-		if(isExist) {
-		str = team.findElement(By.id("illdy_person-" + pom + ""))
-				.findElement(By.cssSelector("#illdy_person-" + pom + " > div > div.person-content > h6")).getText();
-			for (int i = 0; i < str.length(); i++) {
-				if (str.toCharArray()[i] == 'T' || str.toCharArray()[i] == 't') {
-					sum++;
+		screenShot("eversave");
+
+		findElement(10);
+
+		screenShot("pattern");
+		// counts the number of the letters "T" and "t" in the names of the team members
+		WebElement team = driver.findElement(By.cssSelector("#team"));
+
+		int sum = 0;
+		boolean isExist = false;
+		String str = " ";
+		for (int pom = 0; pom < 53; pom++) {
+			// Try to find does this element exists or not
+			try {
+				team.findElement(By.id("illdy_person-" + pom + ""));
+				isExist = true;
+			} catch (NoSuchElementException e) {
+				System.out.println("No scuh element found!");
+				isExist = false;
+			}
+			if (isExist) {
+				str = team.findElement(By.id("illdy_person-" + pom + ""))
+						.findElement(By.cssSelector("#illdy_person-" + pom + " > div > div.person-content > h6"))
+						.getText();
+				for (int i = 0; i < str.length(); i++) {
+					if (str.toCharArray()[i] == 'T' || str.toCharArray()[i] == 't') {
+						sum++;
+					}
 				}
 			}
 		}
+		System.out.println("The sum of the letters -T- and -t- is: " + sum);
+		// Go to Blog
+		driver.findElement(By.id("menu-item-3127")).click();
+		// Search for the "test"
+		driver.findElement(By.cssSelector("#s")).sendKeys("test");
+
+		String str1 = driver.findElement(By.className("post-meta-time")).getText();
+		// I doesn't had time to finish the date comparation
 	}
-	System.out.println("The sum of the letters -T- and -t- is: "+sum);
-	//Go to Blog
-	driver.findElement(By.id("menu-item-3127")).click();
-	//Search for the "test"
-	driver.findElement(By.cssSelector("#s")).sendKeys("test");
-	
-	String str1=driver.findElement(By.className("post-meta-time")).getText();
-	//I doesn't had time to finish the date comparation
-	}
-	
+
 	@After
 	public void afterSuite() {
 		driver.close();
 		driver.quit();
 	}
-	
 
 	public static void screenShot(String name) throws Exception {
 		// This function takes a Screenshot and stores in the folder of the project in a

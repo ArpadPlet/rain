@@ -22,7 +22,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.server.log.LoggingManager;
-
+import qaassignment.test1.Test1;
 import com.wedoqa.Search4Wedoqa.Search4Wedoqa;
 
 public class Test1 {
@@ -36,7 +36,7 @@ public class Test1 {
 		System.out.println("Which browser do you want to use: (Input your answer)");
 		System.out.println("Chrome = 1");
 		System.out.println("Internet Explorer = 2");
-		System.out.println("Microsoft Edge = 3");
+		System.out.println("Mozilla Firefox = 3");
 
 		help = chose.nextInt();
 
@@ -47,8 +47,10 @@ public class Test1 {
 			System.setProperty("webdriver.ie.driver", ".\\driver\\IEDriverServer.exe");
 			driver = new InternetExplorerDriver();
 		} else if (help == 3) {
-			System.setProperty("webdriver.edge.driver", ".\\driver\\MicrosoftWebDriver.exe");
-			driver = new EdgeDriver();
+			/*System.setProperty("webdriver.edge.driver", ".\\driver\\MicrosoftWebDriver.exe");
+			driver = new EdgeDriver();*/
+			System.setProperty("webdriver.gecko.driver", ".\\driver\\geckodriver.exe");
+			driver = new FirefoxDriver();
 		}
 
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);

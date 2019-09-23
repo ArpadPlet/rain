@@ -1,34 +1,29 @@
 package qaassignment.test1;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 
 public class Test3 {
 	
 	protected static WebDriver driver = null;
 
-	@Before
-	public void beforeSuite() {
-		System.setProperty("webdriver.chrome.driver", ".\\driver\\chromedriver.exe");
-		driver = new ChromeDriver();	
+	@BeforeAll
+	public static void beforeSuite() {
+		System.setProperty("webdriver.gecko.driver", ".\\driver\\geckodriver.exe");
+		driver = new FirefoxDriver();	
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		driver.get("https://www.google.com/");
+		driver.get("https://orangehrm-demo-6x.orangehrmlive.com");
 		driver.manage().window().maximize();
 	}
 	
@@ -84,8 +79,8 @@ public class Test3 {
 		
 	}
 	
-	@After
-	public void afterSuite() {
+	@AfterAll
+	public static void afterSuite() {
 		driver.close();
 		driver.quit();
 	}

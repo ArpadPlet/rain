@@ -4,12 +4,14 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
@@ -17,28 +19,27 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.server.log.LoggingManager;
 import qaassignment.test1.Test1;
-import com.wedoqa.Search4Wedoqa.Search4Wedoqa;
+
+import com.wedoqa.Search4Wedoqa.Search;
 
 public class Test1 {
 	protected static WebDriver driver = null;
 	Logger logger = LogManager.getLogger(Test1.class);
 
-	@Before
-	public void beforeSuite() {
+	@BeforeAll
+	public static void beforeSuite() {
 		int help = 0;
-		Scanner chose = new Scanner(System.in);
+		Scanner choose = new Scanner(System.in);
 		System.out.println("Which browser do you want to use: (Input your answer)");
 		System.out.println("Chrome = 1");
 		System.out.println("Internet Explorer = 2");
 		System.out.println("Mozilla Firefox = 3");
 
-		help = chose.nextInt();
+		help = choose.nextInt();
 
 		if (help == 1) {
 			System.setProperty("webdriver.chrome.driver", ".\\driver\\chromedriver.exe");
@@ -57,14 +58,14 @@ public class Test1 {
 		driver.get("https://www.google.com/");
 		driver.manage().window().maximize();
 
-		logger.info("Driver is running!");
 	}
 
 	@Test
 	public void test1() throws Exception {
 
-		Search4Wedoqa search = new Search4Wedoqa(driver);
-		search.TypeWedpqa();
+		logger.info("Start search!");
+		Search search = new Search(driver);
+		search.Type("wedoqa");
 		search.ClickSearch();
 
 		// Click on the first result
@@ -119,8 +120,8 @@ public class Test1 {
 		// I doesn't had time to finish the date comparation
 	}
 
-	@After
-	public void afterSuite() {
+	@AfterAll
+	public static void afterSuite() {
 		driver.close();
 		driver.quit();
 	}

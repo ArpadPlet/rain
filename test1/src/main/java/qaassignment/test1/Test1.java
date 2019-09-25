@@ -6,7 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.apache.commons.io.FileUtils;
@@ -24,14 +26,15 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import qaassignment.test1.Test1;
 
+import com.wedoqa.Search4Wedoqa.Initialization;
 import com.wedoqa.Search4Wedoqa.Search;
 
 public class Test1 {
 	protected static WebDriver driver = null;
 	Logger logger = LogManager.getLogger(Test1.class);
 
-	@BeforeAll
-	public static void beforeSuite() {
+	@BeforeEach
+	public void beforeSuite() {
 		int help = 0;
 		Scanner choose = new Scanner(System.in);
 		System.out.println("Which browser do you want to use: (Input your answer)");
@@ -48,16 +51,11 @@ public class Test1 {
 			System.setProperty("webdriver.ie.driver", ".\\driver\\IEDriverServer.exe");
 			driver = new InternetExplorerDriver();
 		} else if (help == 3) {
-			/*System.setProperty("webdriver.edge.driver", ".\\driver\\MicrosoftWebDriver.exe");
-			driver = new EdgeDriver();*/
 			System.setProperty("webdriver.gecko.driver", ".\\driver\\geckodriver.exe");
 			driver = new FirefoxDriver();
 		}
-
 		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-		driver.get("https://www.google.com/");
-		driver.manage().window().maximize();
-
+		Initialization init = new Initialization(driver);
 	}
 
 	@Test
@@ -65,8 +63,8 @@ public class Test1 {
 
 		logger.info("Start search!");
 		Search search = new Search(driver);
-		search.Type("wedoqa");
-		search.ClickSearch();
+		search.type("wedoqa");
+		search.clickSearch();
 
 		// Click on the first result
 		driver.findElement(By.partialLinkText("wedoqa")).click();
@@ -94,15 +92,14 @@ public class Test1 {
 			// Try to find does this element exists or not
 			try {
 				team.findElement(By.id("illdy_person-" + pom + ""));
+				driver.manage().timeouts().implicitlyWait(10,TimeUnit.MILLISECONDS) ;
 				isExist = true;
 			} catch (NoSuchElementException e) {
 				System.out.println("No scuh element found!");
 				isExist = false;
 			}
 			if (isExist) {
-				str = team.findElement(By.id("illdy_person-" + pom + ""))
-						.findElement(By.cssSelector("#illdy_person-" + pom + " > div > div.person-content > h6"))
-						.getText();
+				str = team.findElement(By.id("illdy_person-" + pom + "")).findElement(By.cssSelector("#illdy_person-" + pom + " > div > div.person-content > h6")).getText();
 				for (int i = 0; i < str.length(); i++) {
 					if (str.toCharArray()[i] == 'T' || str.toCharArray()[i] == 't') {
 						sum++;
@@ -110,7 +107,7 @@ public class Test1 {
 				}
 			}
 		}
-		System.out.println("The sum of the letters -T- and -t- is: " + sum);
+		System.out.println("The letters -T- and -t- appears: " + sum + " times!");
 		// Go to Blog
 		driver.findElement(By.id("menu-item-3127")).click();
 		// Search for the "test"
@@ -120,8 +117,8 @@ public class Test1 {
 		// I doesn't had time to finish the date comparation
 	}
 
-	@AfterAll
-	public static void afterSuite() {
+	@AfterEach
+	public void afterSuite() {
 		driver.close();
 		driver.quit();
 	}
